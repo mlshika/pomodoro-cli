@@ -1,0 +1,77 @@
+#!/usr/bin/env bash
+
+WORK_MINUTES=60
+BREAK_MINUTES=10
+
+notify() {
+    local title="$1"
+    local message="$2"
+
+    notify-send "$title" "$message"
+    spd-say "$message" >/dev/null 2>&1 &
+}
+
+countdown() {
+    local label="$1"
+    local minutes="$2"
+    local seconds=$((minutes * 60))
+
+    clear
+
+    echo "========================================"
+    echo "🍅 Pomodoro"
+    echo "========================================"
+    echo
+    echo "$label Session"
+    echo "Duration : $minutes minutes"
+    echo
+    echo "Press Ctrl+C to quit."
+    echo
+
+    while (( seconds > 0 )); do
+        printf "\r⏳ %02d:%02d remaining" \
+            $((seconds / 60)) \
+            $((seconds % 60))
+
+        sleep 1
+        ((seconds--))
+    done
+
+    echo
+    echo
+
+    notify "$label Complete" "$label session complete."
+}
+
+work() {
+    countdown "Work" "$WORK_MINUTES"
+
+    echo "🍅 Work session complete."
+    read -rsp $'Press Enter to start your break (Ctrl+C to quit)...'
+    echo
+
+    break_session
+}
+
+break_session() {
+    countdown "Break" "$BREAK_MINUTES"
+
+    echo "☕ Break complete."
+    read -rsp $'Press Enter to start your next work session (Ctrl+C to quit)...'
+    echo
+
+    work
+}
+
+case "$1" in
+    work)
+        work
+        ;;
+    break)
+        break_session
+        ;;
+    *)
+        echo "Usage: pomodoro {work|break}"
+        exit 1
+        ;;
+esac
