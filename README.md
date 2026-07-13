@@ -64,3 +64,6 @@ pomodoro break
 ## License
 
 MIT
+
+
+-- you can also use alias p using ~./bashrc if you'd like to, although it is just fine....
