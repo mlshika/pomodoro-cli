@@ -5,7 +5,7 @@ A lightweight Pomodoro timer for Linux written in Bash.
 ## Features
 
 - 🍅 60-minute work sessions
-- ☕ 10-minute break sessions
+- ☕ 5-minute break sessions
 - ⏳ Live countdown
 - 🔔 Desktop notifications
 - 🗣 Voice announcements
